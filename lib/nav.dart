@@ -15,7 +15,6 @@ class Nav extends StatefulWidget {
 
 class _NavState extends State<Nav> with TickerProviderStateMixin {
   TabController? tabController;
-  // double sizeCenterButton = 30;
   bool bigCenterButton = true;
   int currentIndex = 0;
   List<Widget> pages = [
@@ -27,24 +26,8 @@ class _NavState extends State<Nav> with TickerProviderStateMixin {
   tab(int value) {
     currentIndex = value;
     tabController!.animateTo(value);
-    bigCenterButton = true;
-    if (value == 0 || value == 1) {
-      bigCenterButton = false;
-    }
     setState(() {});
   }
-
-  // FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-  // final notifications = FlutterLocalNotificationsPlugin();
-  // FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
-  // init() {
-  //   firebaseMessaging.getToken().then((String? token) async {
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     log("device token = $token");
-  //     await prefs.setString('device_token', token!);
-  //   });
-  //   final FirebaseMessaging = FCM();
-  // }
 
   @override
   void initState() {
@@ -74,8 +57,6 @@ class _NavState extends State<Nav> with TickerProviderStateMixin {
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         color: Colors.grey.shade50,
-        // notchMargin: 8,
-        // clipBehavior: Clip.antiAlias,
         child: BottomNavigationBar(
           elevation: 0,
           onTap: (value) {
@@ -83,7 +64,6 @@ class _NavState extends State<Nav> with TickerProviderStateMixin {
           },
           selectedLabelStyle: GoogleFonts.kanit(),
           unselectedLabelStyle: GoogleFonts.kanit(),
-          // selectedItemColor: primaryColor,
           unselectedItemColor: Colors.grey,
           showUnselectedLabels: true,
           currentIndex: currentIndex,
