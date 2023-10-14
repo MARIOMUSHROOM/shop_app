@@ -6,7 +6,7 @@ import 'package:shop_app/feature/checkout/pages/checkout_page.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/provider/cart_provider.dart';
 import 'package:shop_app/provider/favorite_provider.dart';
-import 'package:shop_app/widgets/toast_v2_widget.dart';
+import 'package:shop_app/widgets/toast_v3_widget.dart';
 
 class CartController extends ChangeNotifier {
   CartController(this.context);
@@ -64,7 +64,7 @@ class CartController extends ChangeNotifier {
           MaterialPageRoute(builder: (context) => CheckOutPage(totalPrice));
       Navigator.push(context, route);
     } else {
-      ToastWidget(context).errorAction(text: "No item in cart.");
+      ToastWidget(context).error(message: "No item in cart.");
     }
   }
 }

@@ -6,7 +6,7 @@ import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/provider/cart_provider.dart';
 import 'package:shop_app/provider/favorite_provider.dart';
 import 'package:shop_app/service/product_api.dart';
-import 'package:shop_app/widgets/toast_v2_widget.dart';
+import 'package:shop_app/widgets/toast_v3_widget.dart';
 
 class ProductController extends ChangeNotifier {
   ProductController(this.context, {required this.product});
@@ -24,16 +24,16 @@ class ProductController extends ChangeNotifier {
     favorite!.setProductToFavorite(product);
     bool selected = favorite!.thisProductInFavorite(product);
     if (selected) {
-      ToastWidget(context).successAction(text: 'saved');
+      ToastWidget(context).success(message: 'saved');
     } else {
-      ToastWidget(context).successAction(text: 'unsaved');
+      ToastWidget(context).error(message: 'unsaved');
     }
     notifyListeners();
   }
 
   addToCart(ProductItem product) {
     cart!.addProductToCart(product);
-    ToastWidget(context).successAction(text: 'added');
+    ToastWidget(context).success(message: 'added');
     notifyListeners();
   }
 }
