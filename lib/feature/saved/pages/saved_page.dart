@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/feature/product/pages/product_page.dart';
 import 'package:shop_app/feature/saved/controller/saved_controller.dart';
@@ -30,6 +31,7 @@ class _SavedPageState extends State<SavedPage> {
       value: savedController,
       child: Consumer<SavedController>(builder: (context, con, _) {
         return Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
             backgroundColor: Colors.white,
             title: const Text(
@@ -45,135 +47,154 @@ class _SavedPageState extends State<SavedPage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  GridView.builder(
-                    shrinkWrap: true,
-                    itemCount: con.productList.length,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount:
-                          (orientation == Orientation.portrait) ? 2 : 3,
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      ProductItem only = con.productList[index];
-                      return GestureDetector(
-                        onTap: () {
-                          var route = MaterialPageRoute(
-                              builder: (context) => ProductPage(only));
-                          Navigator.push(context, route).then((value) {
-                            con.init();
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  flex: 6,
-                                  child: Stack(
-                                    children: [
-                                      Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.shade200,
-                                        ),
-                                        child: Image.network(
-                                          only.imageUrl ?? "",
-                                          fit: BoxFit.cover,
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            return const Center(
-                                              child: Icon(
-                                                Icons
-                                                    .image_not_supported_outlined,
-                                                color: Colors.grey,
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      Positioned(
-                                        top: 5,
-                                        right: 5,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            con.saveFavorite(only);
-                                          },
-                                          child: Builder(builder: (context) {
-                                            bool selected = con.favorite!
-                                                .thisProductInFavorite(only);
-                                            if (selected) {
-                                              return Icon(
-                                                Icons.favorite,
-                                                color: Colors.red,
-                                              );
-                                            }
-                                            return Icon(
-                                              Icons.favorite,
-                                              color: Colors.white,
-                                            );
-                                          }),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 4,
-                                  child: Container(
-                                    width: double.infinity,
-                                    padding:
-                                        const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.max,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          only.name ?? "",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        Builder(builder: (context) {
-                                          var money = NumberFormat.currency(
-                                              customPattern: "#,##0.00",
-                                              locale: "th_TH",
-                                              symbol: "");
-                                          return Text(
-                                            "\$${money.format(only.price ?? 0)} ",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                            ),
-                                          );
-                                        }),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+                  GestureDetector(
+                    onTap: () {
+                      con.removeAll();
                     },
-                  )
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: const [
+                          Icon(
+                            Icons.delete_outline,
+                            color: Colors.red,
+                          ),
+                          Text(
+                            "Remove all",
+                            style: TextStyle(
+                              color: Colors.red,
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  itemListInSaved(con),
                 ],
               ),
             ),
           ),
         );
       }),
+    );
+  }
+
+  Widget itemListInSaved(SavedController con) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.zero,
+      itemCount: con.productList.length,
+      itemBuilder: (context, index) {
+        ProductItem only = con.productList[index];
+        return GestureDetector(
+          onTap: () {
+            var route =
+                MaterialPageRoute(builder: (context) => ProductPage(only));
+            Navigator.push(context, route).then((value) {
+              con.init();
+            });
+          },
+          child: ClipRect(
+            child: Slidable(
+              key: ValueKey(index),
+              endActionPane: ActionPane(
+                extentRatio: 0.2,
+                motion: const ScrollMotion(),
+                children: [
+                  SlidableAction(
+                    onPressed: (context) {
+                      con.removeWhere(only);
+                    },
+                    backgroundColor: Colors.red,
+                    icon: Icons.delete_outline,
+                  ),
+                ],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 5),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              height: 120,
+                              width: 120,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(
+                                  only.imageUrl ?? "",
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Center(
+                                      child: Icon(
+                                        Icons.image_not_supported_outlined,
+                                        color: Colors.grey,
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 15),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 5),
+                              Text(
+                                only.name ?? "",
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
+                              Text(
+                                "\$${con.money.format(only.price ?? 0)} ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 15),
+                        Container(
+                          height: 40,
+                          width: 40,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Colors.grey,
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            "${con.getQuatity(only.id!)}",
+                            style: const TextStyle(fontSize: 15),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

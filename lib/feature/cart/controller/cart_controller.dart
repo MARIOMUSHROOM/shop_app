@@ -60,8 +60,7 @@ class CartController extends ChangeNotifier {
 
   checkOut() {
     if (cartList.isNotEmpty) {
-      var route =
-          MaterialPageRoute(builder: (context) => CheckOutPage(totalPrice));
+      var route = MaterialPageRoute(builder: (context) => CheckOutPage());
       Navigator.push(context, route);
     } else {
       ToastWidget(context).error(message: "No item in cart.");

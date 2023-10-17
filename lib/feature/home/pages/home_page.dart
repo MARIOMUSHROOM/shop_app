@@ -186,31 +186,6 @@ class _HomePageState extends State<HomePage> {
                                               },
                                             ),
                                           ),
-                                          Positioned(
-                                            top: 5,
-                                            right: 5,
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                con.saveFavorite(only);
-                                              },
-                                              child:
-                                                  Builder(builder: (context) {
-                                                bool selected = con.favorite!
-                                                    .thisProductInFavorite(
-                                                        only);
-                                                if (selected) {
-                                                  return Icon(
-                                                    Icons.favorite,
-                                                    color: Colors.red,
-                                                  );
-                                                }
-                                                return Icon(
-                                                  Icons.favorite,
-                                                  color: Colors.white,
-                                                );
-                                              }),
-                                            ),
-                                          ),
                                         ],
                                       ),
                                     ),
@@ -260,35 +235,8 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
-                    // GridView.builder(
-                    //   shrinkWrap: true,
-                    //   itemCount: con.productList.length,
-                    //   physics: const NeverScrollableScrollPhysics(),
-                    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    //     crossAxisCount:
-                    //         (orientation == Orientation.portrait) ? 2 : 3,
-                    //   ),
-                    //   itemBuilder: (BuildContext context, int index) {
-                    //     ProductItem only = con.productList[index];
-                    //   },
-                    // )
                   ],
                 ),
-              ),
-            ),
-            floatingActionButton: GestureDetector(
-              onTap: () {
-                con.sortByPrice();
-              },
-              child: Container(
-                height: 50,
-                width: 50,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  shape: BoxShape.circle,
-                ),
-                child: Text("sort"),
               ),
             ),
           ),

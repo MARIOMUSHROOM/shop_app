@@ -28,6 +28,17 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  num getQuantity(int itemId) {
+    num quatity = 0;
+    CartModel? item = cartList.where((element) {
+      return element.item.id == itemId;
+    }).firstOrNull;
+    if (item != null) {
+      quatity = item.quantity;
+    }
+    return quatity;
+  }
+
   plusQuantity(CartModel only) {
     CartModel item = cartList.where((element) {
       return element.item.id == only.item.id;

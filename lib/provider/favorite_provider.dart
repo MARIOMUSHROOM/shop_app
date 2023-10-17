@@ -27,4 +27,9 @@ class FavoriteProvider extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  removeAll() {
+    favoriteList = [];
+    notifyListeners();
+  }
 }

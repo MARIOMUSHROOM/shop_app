@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,43 +7,35 @@ import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/provider/cart_provider.dart';
 import 'package:shop_app/provider/favorite_provider.dart';
 import 'package:shop_app/service/product_api.dart';
-import 'package:shop_app/widgets/toast_v3_widget.dart';
 
-class SavedController extends ChangeNotifier {
-  SavedController(this.context);
+class CheckoutController extends ChangeNotifier {
+  CheckoutController(this.context);
   BuildContext context;
   FavoriteProvider? favorite;
   CartProvider? cart;
 
-  List<ProductItem> productList = [];
+  List<CartModel> cartList = [];
+  num totalPrice = 0;
   var money = NumberFormat.currency(
       customPattern: "#,##0.00", locale: "th_TH", symbol: "");
   init() {
     favorite = Provider.of<FavoriteProvider>(context, listen: false);
     cart = Provider.of<CartProvider>(context, listen: false);
-    getFavorite();
+    getCart();
+    calculateTotalPrice();
   }
 
-  getFavorite() {
-    productList = [];
-    for (var i = 0; i < favorite!.favoriteList.length; i++) {
-      productList.add(favorite!.favoriteList[i]);
-    }
+  getCart() async {
+    cartList = cart!.cartList;
     notifyListeners();
   }
 
-  num getQuatity(int itemId) {
-    return cart!.getQuantity(itemId);
-  }
-
-  removeWhere(ProductItem item) {
-    favorite!.setProductToFavorite(item);
-    ToastWidget(context).error(message: 'unsaved');
-    getFavorite();
-  }
-
-  removeAll() {
-    favorite!.removeAll();
-    getFavorite();
+  calculateTotalPrice() {
+    totalPrice = 0;
+    for (var i = 0; i < cartList.length; i++) {
+      num onlyPrice = (cartList[i].item.price ?? 0) * cartList[i].quantity;
+      totalPrice = totalPrice + onlyPrice;
+    }
+    notifyListeners();
   }
 }

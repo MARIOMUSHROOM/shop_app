@@ -55,12 +55,6 @@ class _RecommendationPageState extends State<RecommendationPage> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: con.search,
-                      ),
-                    ),
                     GridView.builder(
                       shrinkWrap: true,
                       itemCount: con.productList.length,
