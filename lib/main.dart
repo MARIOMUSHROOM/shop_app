@@ -1,43 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:shop_app/constants/app_constants.dart';
-import 'package:shop_app/constants/state_index.dart';
-import 'package:shop_app/constants/theme.dart';
-import 'package:shop_app/splash_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/injection.dart';
+import 'package:shop_app/nav.dart';
+import 'package:shop_app/presentation/bloc/home_bloc.dart';
 
-Future<void> main() async {
+void main() {
+  setupLocator();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: stateIndex,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => locator<HomeBloc>(),
+        )
+      ],
       child: MaterialApp(
-        title: AppConstants.appTitle,
-        theme: ThemeData(
-          primaryColor: primaryColor,
-          primarySwatch: getMaterialColor(primaryColor),
-          scaffoldBackgroundColor: Colors.grey.shade100,
-          textTheme: GoogleFonts.kanitTextTheme(
-            Theme.of(context).textTheme,
-          ),
-        ),
-        builder: (BuildContext context, Widget? child) {
-          final MediaQueryData data = MediaQuery.of(context);
-          return MediaQuery(
-            data: data.copyWith(
-              textScaleFactor: 1,
-            ),
-            child: child!,
-          );
-        },
-        debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
+        home: Nav(),
       ),
     );
   }

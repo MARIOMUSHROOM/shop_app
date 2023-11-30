@@ -2,9 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shop_app/feature/cart/pages/cart_page.dart';
-import 'package:shop_app/feature/home/pages/home_page.dart';
-import 'package:shop_app/feature/saved/pages/saved_page.dart';
+import 'package:shop_app/presentation/pages/home_page.dart';
 
 class Nav extends StatefulWidget {
   Nav({super.key, this.index = 0});
@@ -19,8 +17,10 @@ class _NavState extends State<Nav> with TickerProviderStateMixin {
   int currentIndex = 0;
   List<Widget> pages = [
     HomePage(),
-    SavedPage(),
-    CartPage(),
+    Text("Save"),
+    Text("Cart"),
+    // SavedPage(),
+    // CartPage(),
   ];
 
   tab(int value) {
