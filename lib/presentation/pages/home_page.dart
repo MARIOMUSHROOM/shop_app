@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/domain/entities/product_item.dart';
 import 'package:shop_app/presentation/bloc/home_bloc.dart';
+import 'package:shop_app/presentation/pages/product_page.dart';
 import 'package:shop_app/presentation/widgets/sizer.dart';
 
 class HomePage extends StatelessWidget {
@@ -48,11 +49,13 @@ class HomePage extends StatelessWidget {
                           ProductItemEntity only = state.result[index];
                           return GestureDetector(
                             onTap: () {
-                              // var route = MaterialPageRoute(
-                              //     builder: (context) => ProductPage(only));
-                              // Navigator.push(context, route).then((value) {
-                              //   con.init();
-                              // });
+                              var route = MaterialPageRoute(
+                                  builder: (context) => ProductPage(only));
+                              Navigator.push(context, route).then((value) {
+                                context
+                                    .read<HomeBloc>()
+                                    .add(const OnLoadProduct());
+                              });
                             },
                             child: Container(
                               height: 200,

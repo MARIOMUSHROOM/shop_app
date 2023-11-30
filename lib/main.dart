@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/injection.dart';
 import 'package:shop_app/nav.dart';
+import 'package:shop_app/presentation/bloc/cart_bloc.dart';
 import 'package:shop_app/presentation/bloc/home_bloc.dart';
 
 void main() {
@@ -18,6 +19,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => locator<HomeBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => locator<CartBloc>(),
         )
       ],
       child: MaterialApp(
