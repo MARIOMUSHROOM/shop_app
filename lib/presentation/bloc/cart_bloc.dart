@@ -23,7 +23,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         await calculate();
         emit(CartLoaded(_cartList, total));
       },
-      transformer: debounce(const Duration(milliseconds: 500)),
     );
     on<AddtoCart>(
       (event, emit) async {
@@ -42,7 +41,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         await calculate();
         emit(CartLoaded(_cartList, total));
       },
-      transformer: debounce(const Duration(milliseconds: 500)),
     );
     on<RemoveFromCart>(
       (event, emit) async {
@@ -53,7 +51,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         await calculate();
         emit(CartLoaded(_cartList, total));
       },
-      transformer: debounce(const Duration(milliseconds: 500)),
     );
     on<AddQuantity>(
       (event, emit) async {
@@ -65,7 +62,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         await calculate();
         emit(CartLoaded(_cartList, total));
       },
-      transformer: debounce(const Duration(milliseconds: 500)),
     );
     on<MinusQuantity>(
       (event, emit) async {
@@ -79,7 +75,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         await calculate();
         emit(CartLoaded(_cartList, total));
       },
-      transformer: debounce(const Duration(milliseconds: 500)),
     );
   }
   bool thisProductInCart(ProductItemEntity product) {
@@ -99,8 +94,4 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     }
     log("calculated");
   }
-}
-
-EventTransformer<T> debounce<T>(Duration duration) {
-  return (events, mapper) => events.debounceTime(duration).flatMap(mapper);
 }

@@ -4,6 +4,8 @@ import 'package:shop_app/injection.dart';
 import 'package:shop_app/nav.dart';
 import 'package:shop_app/presentation/bloc/cart_bloc.dart';
 import 'package:shop_app/presentation/bloc/home_bloc.dart';
+import 'package:shop_app/presentation/bloc/product_detail_bloc.dart';
+import 'package:shop_app/presentation/bloc/saved_bloc.dart';
 
 void main() {
   setupLocator();
@@ -19,6 +21,12 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => locator<HomeBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => locator<ProductDetailBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => locator<SavedBloc>(),
         ),
         BlocProvider(
           create: (_) => locator<CartBloc>(),

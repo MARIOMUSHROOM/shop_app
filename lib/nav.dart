@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shop_app/presentation/pages/cart_page.dart';
 import 'package:shop_app/presentation/pages/home_page.dart';
+import 'package:shop_app/presentation/pages/saved_page.dart';
 
 class Nav extends StatefulWidget {
   Nav({super.key, this.index = 0});
@@ -18,9 +19,9 @@ class _NavState extends State<Nav> with TickerProviderStateMixin {
   int currentIndex = 0;
   List<Widget> pages = [
     HomePage(),
-    Text("Save"),
+    // Text("Save"),
     // Text("Cart"),
-    // SavedPage(),
+    SavedPage(),
     CartPage(),
   ];
 
@@ -69,7 +70,7 @@ class _NavState extends State<Nav> with TickerProviderStateMixin {
           showUnselectedLabels: true,
           currentIndex: currentIndex,
           type: BottomNavigationBarType.fixed,
-          items: [
+          items: const [
             BottomNavigationBarItem(
                 activeIcon: Icon(Icons.home),
                 icon: Icon(Icons.home_outlined),

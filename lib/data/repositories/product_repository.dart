@@ -4,6 +4,7 @@ import 'package:shop_app/core/error/exception.dart';
 import 'package:shop_app/core/error/failure.dart';
 import 'package:dartz/dartz.dart';
 import 'package:shop_app/data/data_source/product_data_source.dart';
+import 'package:shop_app/data/model/product_item_model.dart';
 import 'package:shop_app/domain/entities/product_item.dart';
 import 'package:shop_app/domain/repositories/product_repository.dart';
 
@@ -20,6 +21,18 @@ class ProductRepositoryImpl extends ProductRepository {
         list.add(result.productItems![i].toEntity());
       }
       return Right(list);
+    } on ServerException {
+      return const Left(ServerFailure('An error has occurred'));
+    } on SocketException {
+      return const Left(ConnectionFailure('Failed to connect to the network'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProductItemEntity>> getProductById(int id) async {
+    try {
+      final result = await productDataSource.getProductById(id);
+      return Right(result.toEntity());
     } on ServerException {
       return const Left(ServerFailure('An error has occurred'));
     } on SocketException {
