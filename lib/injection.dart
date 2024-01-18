@@ -1,40 +1,36 @@
-import 'package:get_it/get_it.dart';
-import 'package:shop_app/data/data_source/product_data_source.dart';
-import 'package:shop_app/data/repositories/product_repository.dart';
-import 'package:shop_app/domain/repositories/product_repository.dart';
-import 'package:shop_app/domain/usecases/get_current_product.dart';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
-import 'package:shop_app/domain/usecases/get_product_by_id.dart';
-import 'package:shop_app/presentation/bloc/cart_bloc.dart';
-import 'package:shop_app/presentation/bloc/home_bloc.dart';
-import 'package:shop_app/presentation/bloc/product_detail_bloc.dart';
-import 'package:shop_app/presentation/bloc/saved_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shop_app/data/data_source/todo_data_source.dart';
+import 'package:shop_app/data/repositories/todo_repository_impl.dart';
+import 'package:shop_app/domain/repositories/todo_repository.dart';
+import 'package:shop_app/domain/usecases/get_todo.dart';
+import 'package:shop_app/presentation/doing/bloc/doing_bloc.dart';
+import 'package:shop_app/presentation/done/bloc/done_bloc.dart';
+import 'package:shop_app/presentation/todo/bloc/todo_bloc.dart';
 
-final locator = GetIt.instance;
-
-void setupLocator() {
+final sl = GetIt.instance;
+setupLocator() {
   // bloc
-  locator.registerFactory(() => HomeBloc(locator()));
-  locator.registerFactory(() => ProductDetailBloc(locator()));
-  locator.registerFactory(() => CartBloc());
-  locator.registerFactory(() => SavedBloc());
+  sl.registerFactory(() => TodoBloc(sl()));
+  sl.registerFactory(() => DoingBloc(sl()));
+  sl.registerFactory(() => DoneBloc(sl()));
 
   // usecase
-  locator.registerLazySingleton(() => GetCurrentProductUseCase(locator()));
-  locator.registerLazySingleton(() => GetProductByIdUseCase(locator()));
+  sl.registerLazySingleton(() => GetTodoUseCase(sl()));
 
   // repository
-  locator.registerLazySingleton<ProductRepository>(
-    () => ProductRepositoryImpl(productDataSource: locator()),
-  );
+  sl.registerLazySingleton<TodoRepository>(
+      () => TodoRepositoryImpl(todoDataSource: sl()));
+
+  // params
+  sl.registerLazySingleton<TodoRequest>(() => TodoRequest(sl()));
 
   // data source
-  locator.registerLazySingleton<ProductDataSource>(
-    () => ProductDataSourceImpl(
-      client: locator(),
-    ),
-  );
+  sl.registerLazySingleton<TodoDataSource>(
+      () => TodoDataSourceImpl(client: sl()));
 
   // external
-  locator.registerLazySingleton(() => http.Client());
+  sl.registerLazySingleton<Dio>(() => Dio());
+  sl.registerLazySingleton<http.Client>(() => http.Client());
 }

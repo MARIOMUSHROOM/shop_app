@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/injection.dart';
-import 'package:shop_app/nav.dart';
-import 'package:shop_app/presentation/bloc/cart_bloc.dart';
-import 'package:shop_app/presentation/bloc/home_bloc.dart';
-import 'package:shop_app/presentation/bloc/product_detail_bloc.dart';
-import 'package:shop_app/presentation/bloc/saved_bloc.dart';
+import 'package:shop_app/presentation/doing/bloc/doing_bloc.dart';
+import 'package:shop_app/presentation/done/bloc/done_bloc.dart';
+import 'package:shop_app/presentation/home/home_page.dart';
+import 'package:shop_app/presentation/todo/bloc/todo_bloc.dart';
 
-void main() {
+Future<void> main() async {
   setupLocator();
   runApp(const MyApp());
 }
@@ -20,20 +19,17 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => locator<HomeBloc>(),
+          create: (_) => sl<TodoBloc>(),
         ),
         BlocProvider(
-          create: (_) => locator<ProductDetailBloc>(),
+          create: (_) => sl<DoingBloc>(),
         ),
         BlocProvider(
-          create: (_) => locator<SavedBloc>(),
+          create: (_) => sl<DoneBloc>(),
         ),
-        BlocProvider(
-          create: (_) => locator<CartBloc>(),
-        )
       ],
       child: MaterialApp(
-        home: Nav(),
+        home: HomePage(),
       ),
     );
   }
