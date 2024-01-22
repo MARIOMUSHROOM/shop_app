@@ -56,6 +56,7 @@ class _TodoPageState extends State<TodoPage>
           width: Sizer(context).w,
           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: SingleChildScrollView(
+            key: const Key('scroll'),
             controller: scrollController,
             child: Builder(builder: (context) {
               if (showTask != null) {
@@ -146,6 +147,7 @@ class _TodoPageState extends State<TodoPage>
               motion: const ScrollMotion(),
               children: [
                 SlidableAction(
+                  key: const Key("deletebutton"),
                   onPressed: (context) {
                     BlocProvider.of<TodoBloc>(context)
                         .add(RemoveTodo(only.id!));

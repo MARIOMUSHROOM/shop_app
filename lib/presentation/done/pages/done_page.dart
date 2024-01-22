@@ -56,6 +56,7 @@ class _DonePageState extends State<DonePage>
           width: Sizer(context).w,
           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
           child: SingleChildScrollView(
+            key: const Key('scroll'),
             controller: scrollController,
             child: Builder(builder: (context) {
               if (showTask != null) {
